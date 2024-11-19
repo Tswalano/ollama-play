@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" class="dark">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -96,11 +97,11 @@
             }
         }
         .thinking {
-            display: block; /* Updated CSS */
+            display: block;
         }
-        .thinking span::before { /* Updated CSS */
+        .thinking span::before {
             content: "";
-            display: inline-block; /* Updated CSS */
+            display: inline-block;
             width: 4px;
             height: 4px;
             background-color: currentColor;
@@ -114,46 +115,57 @@
         }
     </style>
 </head>
+
 <body class="bg-background text-foreground">
     <div class="flex h-screen">
         <!-- Sidebar -->
-        <div class="w-64 bg-card border-r border-border">
+        <aside class="w-64 bg-card border-r border-border">
             <div class="p-4">
                 <h1 class="text-2xl font-bold">RAG App</h1>
             </div>
             <div class="px-4 py-2">
-                <button id="new-chat" class="w-full bg-primary text-primary-foreground rounded-md py-2 px-4 hover:bg-primary/90 transition-colors">
+                <button id="new-chat"
+                    class="w-full bg-primary text-primary-foreground rounded-md py-2 px-4 hover:bg-primary/90 transition-colors"
+                    aria-label="Start a new chat">
                     New Chat
                 </button>
             </div>
             <div id="chat-history" class="mt-4">
-                <!-- Chat history items will be added here -->
+                <!-- Chat history items -->
             </div>
-        </div>
+        </aside>
 
         <!-- Main Chat Area -->
-        <div class="flex-1 flex flex-col">
-            <div id="chat-messages" class="flex-1 overflow-y-auto p-4 w-full">
-                <!-- Welcome message (initially visible) -->
+        <main class="flex-1 flex flex-col">
+            <section id="chat-messages" class="flex-1 overflow-y-auto p-4">
                 <div id="welcome-message" class="flex flex-col items-center justify-center h-full text-center">
-                    <h2 class="text-4xl font-bold mb-4">Welcome to RAG App</h2>
-                    <p class="text-xl text-muted-foreground mb-8">Your AI-powered Retrieval-Augmented Generation assistant</p>
-                    <button id="start-chat" class="bg-primary text-primary-foreground rounded-md py-2 px-6 text-lg hover:bg-primary/90 transition-colors">
+                    <h2 class="text-4xl font-bold mb-4">Welcome to RAG
+                        App</h2>
+                    <p class="text-xl text-muted-foreground mb-8">
+                        Your AI-powered Retrieval-Augmented Generation
+                        assistant
+                    </p>
+                    <button id="start-chat"
+                        class="bg-primary text-primary-foreground rounded-md py-2 px-6 text-lg hover:bg-primary/90 transition-colors"
+                        aria-label="Start chatting">
                         Start a New Chat
                     </button>
                 </div>
-                <!-- Chat messages will be added here -->
-            </div>
-            <div class="border-t border-border p-4">
+            </section>
+            <footer class="border-t border-border p-4">
                 <form id="chat-form" class="flex items-center">
-                    <input type="text" id="user-input" class="flex-1 bg-input text-foreground rounded-md py-2 px-4 mr-2" placeholder="Type your message...">
-                    <button type="submit" class="bg-primary text-primary-foreground rounded-md py-2 px-4 hover:bg-primary/90 transition-colors">Send</button>
+                    <input type="text" id="user-input" class="flex-1 bg-input text-foreground rounded-md py-2 px-4 mr-2"
+                        placeholder="Type your message..." aria-label="Chat input" />
+                    <button type="submit"
+                        class="bg-primary text-primary-foreground rounded-md py-2 px-4 hover:bg-primary/90 transition-colors"
+                        aria-label="Send message">
+                        Send
+                    </button>
                 </form>
-            </div>
-        </div>
+            </footer>
+        </main>
     </div>
 
-    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
     <script>
         const chatHistory = document.getElementById('chat-history');
         const chatMessages = document.getElementById('chat-messages');
@@ -163,112 +175,166 @@
         const welcomeMessage = document.getElementById('welcome-message');
         const startChatButton = document.getElementById('start-chat');
 
-        function showThinkingIndicator() {
-            const thinkingIndicator = document.getElementById('thinking-indicator');
-            if (thinkingIndicator) thinkingIndicator.style.display = 'block';
-            document.querySelector('button[type="submit"]').disabled = true;
-        }
+        let currentConversationId = null;
 
-        function hideThinkingIndicator() {
-            const thinkingIndicator = document.getElementById('thinking-indicator');
-            if (thinkingIndicator) thinkingIndicator.remove();
-            document.querySelector('button[type="submit"]').disabled = false;
-        }
-
-        let currentChatId = 0;
-
-        function addChatToHistory(id, preview) {
-            const chatItem = document.createElement('div');
-            chatItem.className = 'px-4 py-2 hover:bg-accent cursor-pointer';
-            chatItem.textContent = `Chat ${id}: ${preview}`;
-            chatItem.onclick = () => loadChat(id);
-            chatHistory.appendChild(chatItem);
-        }
-
-        function addMessage(sender, content) {
-            const messageDiv = document.createElement('div');
-            messageDiv.className = `mb-4 ${sender === 'User' ? 'text-right' : 'text-left'}`;
-            messageDiv.innerHTML = `
-                <span class="inline-block bg-accent text-accent-foreground rounded-lg py-2 px-4">
-                    <strong>${sender}:</strong> ${content}
-                </span>
-            `;
-            chatMessages.appendChild(messageDiv);
-            chatMessages.scrollTop = chatMessages.scrollHeight;
-
-            if (sender === 'User') {
-                const thinkingDiv = document.createElement('div');
-                thinkingDiv.id = 'thinking-indicator';
-                thinkingDiv.className = 'thinking mb-4 text-left';
-                thinkingDiv.innerHTML = '<span class="inline-block bg-accent text-accent-foreground rounded-lg py-2 px-4">Thinking...</span>';
-                chatMessages.appendChild(thinkingDiv);
-                chatMessages.scrollTop = chatMessages.scrollHeight;
+        // Initialize the chat interface
+        async function initializeChat() {
+            await loadConversations();
+            const conversationId = new URLSearchParams(window.location.search).get('conversationId');
+            if (conversationId) {
+                await loadConversation(conversationId);
             }
+
+            // Setup event listeners
+            newChatButton.addEventListener('click', startNewChat);
+            startChatButton.addEventListener('click', startNewChat);
+            chatForm.addEventListener('submit', handleSubmit);
         }
 
-        function loadChat(id) {
+        // Fetch and update the sidebar chat history
+        async function loadConversations() {
+            const response = await fetch('/conversations');
+            const data = await response.json();
+            updateChatHistory(data.conversations);
+        }
+
+        // Update the sidebar chat history
+        function updateChatHistory(conversations) {
+            chatHistory.innerHTML = conversations.map(conv => `
+                <div class="px-4 py-2 hover:bg-accent cursor-pointer conversation-item ${conv.id === currentConversationId ? 'bg-accent' : ''}" onclick="loadConversation(${conv.id})">
+                    <div class="text-sm font-medium truncate">${conv.title}</div>
+                    <div class="text-xs text-muted-foreground">${new Date(conv.start_time).toLocaleString()}</div>
+                </div>
+            `).join('');
+        }
+
+        // Display or hide the thinking indicator
+        function toggleThinkingIndicator(isThinking) {
+            const thinkingIndicator = document.getElementById('thinking-indicator');
+            if (thinkingIndicator) {
+                thinkingIndicator.style.display = isThinking ? 'block' : 'none';
+            }
+            document.querySelector('button[type="submit"]').disabled = isThinking;
+        }
+
+        // Start a new chat conversation
+        async function startNewChat() {
             welcomeMessage.style.display = 'none';
+
+            const formattedDate = new Date().toLocaleString('en-GB', {
+                weekday: 'short', day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit'
+            });
+
+            const response = await fetch('/conversation', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ title: 'New Chat: ' + formattedDate })
+            });
+            const data = await response.json();
+            currentConversationId = data.id;
+
             chatMessages.innerHTML = '';
-            addMessage('System', `Chat ${id} loaded`);
+            await loadConversations();
+            loadConversation(data.id);
         }
 
-        function startNewChat() {
-            currentChatId++;
-            welcomeMessage.style.display = 'none';
-            chatMessages.innerHTML = '';
-            addMessage('System', `New chat started (ID: ${currentChatId})`);
-            addChatToHistory(currentChatId, 'New conversation');
-            chatForm.style.display = 'flex';
-        }
+        async function loadConversation(conversationId) {
+            try {
+                const response = await fetch(`/conversation/${conversationId}`);
 
-        newChatButton.onclick = startNewChat;
-        startChatButton.onclick = startNewChat;
-
-        chatForm.onsubmit = (e) => {
-            e.preventDefault();
-            console.log('submit');
-            // Show thinking indicator
-            showThinkingIndicator();
-            // clear the input field
-            
-            const message = userInput.value.trim();
-            if (message) {
-                userInput.value = '';
-                if (currentChatId === 0) {
-                    startNewChat();
+                if (!response.ok) {
+                    throw new Error('Failed to fetch conversation');
                 }
 
-                console.log(`Sending message: ${message}`);
-                addMessage('User', message);
+                const data = await response.json();
 
-                // Send the message to the Flask backend
-                fetch("/chat", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({ query: "You: " + message }),
-                })
-                .then(response => response.json())
-                .then(data => {
-                    addMessage('AI', data.response);
-                    // Hide thinking indicator
-                    hideThinkingIndicator();
-                    
-                    // Scroll to the bottom of the chat
-                    chatMessages.scrollTop = chatMessages.scrollHeight;
-                })
-                .catch(error => {
-                    hideThinkingIndicator();
-                    console.error("Error:", error);
+                // Clear previous chat messages
+                chatMessages.innerHTML = '';
+
+                // Loop through each message and append it to the chat container
+                data.conversation.forEach(msg => {
+                    const isUser = msg.role === 'user';
+                    const className = isUser ? 'bg-primary text-primary-foreground' : 'bg-accent text-accent-foreground';
+                    const align = isUser ? 'flex justify-end' : 'flex justify-start';
+                    const name = isUser ? 'U' : 'AI';
+                    const avatarColor = isUser ? 'bg-blue-500' : 'bg-green-500';
+                    const avatarText = isUser ? 'U' : 'AI';
+
+                    // Insert the formatted HTML content
+                    chatMessages.innerHTML += `
+                <div class="mb-4 flex items-start ${align}">
+                    <div class="w-8 h-8 rounded-full flex items-center justify-center text-sm font-semibold ${avatarColor} text-white">
+                        ${avatarText}
+                    </div>
+                    <div class="max-w-[70%] ${className} rounded-lg py-2 px-4">
+                        ${msg.content}  <!-- This is where the HTML content from the server is inserted -->
+                    </div>
+                </div>
+            `;
                 });
-                
-            }
-        };
 
-        // Initialize with welcome message visible and chat form hidden
-        chatForm.style.display = 'none';
-        userInput.value = '';
+                // Scroll to the bottom of the chat messages
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
+
+        // Create HTML for a single message
+        function createMessageHTML(msg) {
+            const isUser = msg.role === 'user';
+            const className = isUser ? 'bg-primary text-primary-foreground' : 'bg-accent text-accent-foreground';
+            const align = isUser ? 'flex justify-end' : 'flex justify-start';
+            const avatarColor = isUser ? 'bg-blue-500' : 'bg-green-500';
+            const avatarText = isUser ? 'U' : 'AI';
+
+            return `
+                <div class="mb-4 flex items-start ${align}">
+                    <div class="w-8 h-8 rounded-full flex items-center justify-center text-sm font-semibold ${avatarColor} text-white">
+                        ${avatarText}
+                    </div>
+                    <div class="max-w-[70%] ${className} rounded-lg py-2 px-4">
+                        ${msg.content}
+                    </div>
+                </div>
+            `;
+        }
+
+        // Handle form submission for sending messages
+        async function handleSubmit(event) {
+            event.preventDefault();
+            const message = userInput.value.trim();
+
+            if (!message) return;
+
+            if (!currentConversationId) {
+                await startNewChat();
+            }
+
+            chatMessages.innerHTML += createMessageHTML({ role: 'user', content: message });
+            toggleThinkingIndicator(true);
+            userInput.value = '';
+
+            try {
+                const response = await fetch(`/conversation/${currentConversationId}/chat`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ query: message, conversation_id: currentConversationId })
+                });
+
+                const data = await response.json();
+                toggleThinkingIndicator(false);
+
+                chatMessages.innerHTML += createMessageHTML({ role: 'assistant', content: data.html });
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            } catch (error) {
+                console.error('Error:', error);
+                toggleThinkingIndicator(false);
+            }
+        }
+
+        // Initialize the chat interface
+        initializeChat();
     </script>
-</body>
-</html>
