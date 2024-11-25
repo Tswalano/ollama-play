@@ -1,12 +1,5 @@
-"ID","Date","Department","Category","Amount","Description"
-"1","2022-01-01","Sales","Revenue",10000,"Client X Payment"
-"2","2022-01-05","Marketing","Expense",5000,"Advertising Campaign"
-"3","2022-01-10","IT","Asset",20000,"New Server Purchase"
-"4","2022-01-15","HR","Expense",3000,"Training Session"
-"5","2022-01-20","Sales","Revenue",15000,"Client Y Payment"
-"6","2022-01-25","Finance","Expense",4000,"Audit Services"
-"7","2022-01-30","Operations","Asset",10000,"Equipment Upgrade"
-"8","2022-02-01","Marketing","Expense",6000,"Event Sponsorship"
-"9","2022-02-05","IT","Expense",8000,"Software Subscription"
-"10","2022-02-10","HR","Revenue",9000,"Training Session Revenue"
-"11","2023-02-10","HR","Revenue",6000,"Training Session Revenue"
+id,department_id,year,quarter,revenue,expenses,profit
+1,1,2023,1,300000,250000,50000
+2,1,2023,2,350000,280000,70000
+3,2,2023,1,400000,300000,100000
+4,2,2023,2,450000,320000,130000

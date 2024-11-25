@@ -1,0 +1,51 @@
+emp_id,first_name,last_name,dept_id,date_hire,salary,performance_rating,bonus_percentage,vacation_days,remote_work,email,username,position,manager_id
+1,Alice,Davidson,2,2019-06-03,126448,4.91,0.1,19,Office,adavidson@company.com,adavidso,Brand Manager,40.0
+2,Brenda,Clark,2,2018-08-03,51099,4.66,0.09,15,Hybrid,bclark@company.com,bclark,SEO Specialist,40.0
+3,Brandon,King,3,2020-08-28,80631,4.08,0.12,17,Full Remote,bking@company.com,bking,HR Manager,
+4,Miguel,Chen,1,2020-05-12,77638,4.83,0.09,12,Office,mchen@company.com,mchen,Software Engineer,47.0
+5,Paula,Johnson,3,2019-02-06,138045,4.42,0.07,18,Hybrid,pjohnson@company.com,pjohnson,HR Specialist,7.0
+6,Crystal,Martin,1,2022-08-22,117593,3.09,0.15,13,Hybrid,cmartin@company.com,cmartin,DevOps Engineer,42.0
+7,Christopher,Chan,3,2020-06-11,50743,4.87,0.1,18,Office,cchan@company.com,cchan,Recruiter,
+8,Alyssa,Thompson,2,2015-04-20,141591,4.12,0.07,11,Full Remote,athompson@company.com,athompso,SEO Specialist,40.0
+9,Nicholas,Taylor,2,2024-07-28,50630,3.11,0.14,16,Full Remote,ntaylor@company.com,ntaylor,SEO Specialist,40.0
+10,Terri,Keller,4,2018-01-09,119222,4.77,0.12,14,Office,tkeller@company.com,tkeller,Financial Controller,23.0
+11,Lisa,Thomas,5,2024-09-28,107099,3.5,0.13,25,Full Remote,lthomas@company.com,lthomas,Operations Coordinator,37.0
+12,Lindsey,Buck,2,2020-04-26,109775,4.34,0.14,10,Full Remote,lbuck@company.com,lbuck,Content Writer,40.0
+13,Rebecca,Page,4,2015-03-06,83193,4.79,0.13,12,Full Remote,rpage@company.com,rpage,Financial Analyst,20.0
+14,Danielle,Joyce,3,2024-01-31,87257,4.45,0.1,17,Hybrid,djoyce@company.com,djoyce,HR Assistant,7.0
+15,Michelle,Jenkins,4,2016-01-30,72992,4.98,0.09,18,Office,mjenkins@company.com,mjenkins,Financial Controller,23.0
+16,Stephen,Tucker,5,2022-06-30,81328,3.71,0.13,18,Office,stucker@company.com,stucker,Operations Coordinator,37.0
+17,Frank,Gomez,2,2022-10-14,148749,4.55,0.12,19,Full Remote,fgomez@company.com,fgomez,Marketing Manager,40.0
+18,Tiffany,Campbell,1,2016-02-18,104075,4.98,0.09,23,Full Remote,tcampbell@company.com,tcampbel,DevOps Engineer,42.0
+19,Nicole,Allen,2,2015-11-08,147466,3.74,0.11,23,Office,nallen@company.com,nallen,SEO Specialist,40.0
+20,David,Snyder,4,2019-10-16,122540,4.39,0.14,22,Hybrid,dsnyder@company.com,dsnyder,Auditor,
+21,Katherine,Mcmahon,4,2024-10-21,76336,3.77,0.13,25,Hybrid,kmcmahon@company.com,kmcmahon,Financial Analyst,23.0
+22,Deborah,Reynolds,3,2019-01-31,79310,4.34,0.12,24,Hybrid,dreynolds@company.com,dreynold,Recruiter,7.0
+23,John,Smith,4,2024-10-22,122738,4.5,0.12,11,Full Remote,jsmith@company.com,jsmith,Financial Controller,
+24,Sandra,Jordan,2,2015-04-17,107350,4.9,0.07,14,Hybrid,sjordan@company.com,sjordan,Marketing Manager,40.0
+25,Jessica,Atkins,2,2020-12-12,146065,3.17,0.06,10,Full Remote,jatkins@company.com,jatkins,Marketing Specialist,40.0
+26,Christian,Hernandez,3,2020-08-28,129484,4.76,0.06,15,Hybrid,chernandez@company.com,chernand,Training Coordinator,3.0
+27,Michael,Farmer,1,2024-07-28,69814,4.16,0.05,16,Hybrid,mfarmer@company.com,mfarmer,DevOps Engineer,42.0
+28,John,Bray,3,2018-12-15,101263,3.39,0.15,23,Office,jbray@company.com,jbray,Recruiter,41.0
+29,John,Baker,2,2024-01-05,89508,4.37,0.1,23,Hybrid,jbaker@company.com,jbaker,Marketing Specialist,40.0
+30,Susan,Benson,3,2016-07-02,69657,4.07,0.06,23,Full Remote,sbenson@company.com,sbenson,HR Manager,41.0
+31,John,Smith,3,2020-06-16,113247,3.4,0.08,11,Full Remote,jsmith@company.com,jsmith,HR Assistant,3.0
+32,Elaine,Torres,4,2020-02-10,60609,4.84,0.07,14,Hybrid,etorres@company.com,etorres,Finance Manager,23.0
+33,Peggy,Bailey,4,2017-10-20,106450,3.3,0.12,14,Hybrid,pbailey@company.com,pbailey,Accountant,
+34,William,Ferguson,1,2022-04-17,57636,3.08,0.06,22,Hybrid,wferguson@company.com,wferguso,Tech Lead,42.0
+35,Kim,Travis,3,2020-11-26,113200,4.33,0.15,12,Hybrid,ktravis@company.com,ktravis,HR Assistant,3.0
+36,Anthony,Giles,4,2015-03-25,71040,4.67,0.09,17,Hybrid,agiles@company.com,agiles,Accountant,23.0
+37,Anna,Lynch,5,2016-03-18,95257,4.54,0.05,10,Hybrid,alynch@company.com,alynch,Operations Manager,
+38,Joseph,Saunders,3,2015-05-20,129849,3.01,0.05,15,Hybrid,jsaunders@company.com,jsaunder,HR Manager,3.0
+39,Megan,Ward,1,2021-09-20,72766,3.44,0.13,14,Hybrid,mward@company.com,mward,System Architect,47.0
+40,Bruce,Stewart,2,2023-05-17,141718,3.62,0.1,18,Full Remote,bstewart@company.com,bstewart,Marketing Manager,
+41,Logan,Miller,3,2021-10-01,141427,3.96,0.08,19,Office,lmiller@company.com,lmiller,Recruiter,
+42,Nicholas,Mills,1,2022-04-03,120027,3.38,0.14,23,Office,nmills@company.com,nmills,Tech Lead,
+43,Brittney,Hansen,1,2016-09-19,148614,4.38,0.15,18,Office,bhansen@company.com,bhansen,Tech Lead,42.0
+44,Holly,Lynch,4,2017-05-23,130657,4.39,0.11,10,Full Remote,hlynch@company.com,hlynch,Financial Analyst,23.0
+45,Jason,Allen,3,2021-08-11,64650,3.73,0.11,15,Full Remote,jallen@company.com,jallen,HR Manager,7.0
+46,Amber,Perez,1,2015-05-26,70839,3.11,0.13,20,Hybrid,aperez@company.com,aperez,System Architect,42.0
+47,Jasmine,Price,1,2017-04-24,131651,3.11,0.12,10,Office,jprice@company.com,jprice,System Architect,
+48,Savannah,Garcia,3,2017-08-14,117772,3.96,0.13,20,Office,sgarcia@company.com,sgarcia,HR Manager,7.0
+49,Bill,Gamble,1,2021-05-04,68375,3.98,0.09,13,Office,bgamble@company.com,bgamble,DevOps Engineer,47.0
+50,Christopher,Chavez,3,2023-02-13,120985,4.53,0.08,15,Office,cchavez@company.com,cchavez,HR Assistant,7.0

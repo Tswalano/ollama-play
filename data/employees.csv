@@ -1,0 +1,6 @@
+id,first_name,last_name,department_id,position,salary,hire_date,manager_id
+1,John,Smith,1,Lead Engineer,120000,2020-01-15,
+2,Jane,Doe,2,Sales Director,150000,2019-03-20,
+3,Bob,Johnson,3,Marketing Head,140000,2019-06-10,
+4,Alice,Williams,4,HR Director,130000,2019-09-05,
+5,Charlie,Brown,1,Senior Engineer,100000,2020-04-15,1

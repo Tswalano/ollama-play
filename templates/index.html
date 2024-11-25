@@ -119,7 +119,7 @@
 <body class="bg-background text-foreground">
     <div class="flex h-screen">
         <!-- Sidebar -->
-        <aside class="w-64 bg-card border-r border-border">
+        <aside class="w-64 bg-card border-r border-border overflow-y-auto">
             <div class="p-4">
                 <h1 class="text-2xl font-bold">RAG App</h1>
             </div>
@@ -137,7 +137,7 @@
 
         <!-- Main Chat Area -->
         <main class="flex-1 flex flex-col">
-            <section id="chat-messages" class="flex-1 overflow-y-auto p-4">
+            <section id="chat-messages" class="flex-1 overflow-y-auto p-8">
                 <div id="welcome-message" class="flex flex-col items-center justify-center h-full text-center">
                     <h2 class="text-4xl font-bold mb-4">Welcome to RAG
                         App</h2>
@@ -176,12 +176,14 @@
         const startChatButton = document.getElementById('start-chat');
 
         let currentConversationId = null;
+        let thinkingIndicator = null;
 
         // Initialize the chat interface
         async function initializeChat() {
             await loadConversations();
             const conversationId = new URLSearchParams(window.location.search).get('conversationId');
             if (conversationId) {
+                currentConversationId = conversationId;
                 await loadConversation(conversationId);
             }
 
@@ -193,7 +195,7 @@
 
         // Fetch and update the sidebar chat history
         async function loadConversations() {
-            const response = await fetch('/conversations');
+            const response = await fetch('/api/conversations');
             const data = await response.json();
             updateChatHistory(data.conversations);
         }
@@ -210,10 +212,13 @@
 
         // Display or hide the thinking indicator
         function toggleThinkingIndicator(isThinking) {
-            const thinkingIndicator = document.getElementById('thinking-indicator');
-            if (thinkingIndicator) {
-                thinkingIndicator.style.display = isThinking ? 'block' : 'none';
+            if (!thinkingIndicator) {
+                thinkingIndicator = document.createElement('div');
+                thinkingIndicator.className = 'thinking';
+                thinkingIndicator.innerHTML = '<span></span><span></span><span></span>';
+                chatMessages.appendChild(thinkingIndicator);
             }
+            thinkingIndicator.style.display = isThinking ? 'block' : 'none';
             document.querySelector('button[type="submit"]').disabled = isThinking;
         }
 
@@ -225,13 +230,16 @@
                 weekday: 'short', day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit'
             });
 
-            const response = await fetch('/conversation', {
+            const response = await fetch('/api/conversation', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ title: 'New Chat: ' + formattedDate })
             });
             const data = await response.json();
-            currentConversationId = data.id;
+            currentConversationId = data.id;            
+
+            // Update the URL with the new conversationId
+            window.history.pushState({}, '', `?conversationId=${currentConversationId}`);
 
             chatMessages.innerHTML = '';
             await loadConversations();
@@ -240,13 +248,19 @@
 
         async function loadConversation(conversationId) {
             try {
-                const response = await fetch(`/conversation/${conversationId}`);
+                const response = await fetch(`/api/conversation/${conversationId}`);
 
                 if (!response.ok) {
                     throw new Error('Failed to fetch conversation');
                 }
 
                 const data = await response.json();
+                currentConversationId = data.conversationId;
+
+                // Update the URL with the new conversationId
+                window.history.pushState({}, '', `?conversationId=${currentConversationId}`);
+
+                console.log(data.conversationId);
 
                 // Clear previous chat messages
                 chatMessages.innerHTML = '';
@@ -262,15 +276,15 @@
 
                     // Insert the formatted HTML content
                     chatMessages.innerHTML += `
-                <div class="mb-4 flex items-start ${align}">
-                    <div class="w-8 h-8 rounded-full flex items-center justify-center text-sm font-semibold ${avatarColor} text-white">
-                        ${avatarText}
-                    </div>
-                    <div class="max-w-[70%] ${className} rounded-lg py-2 px-4">
-                        ${msg.content}  <!-- This is where the HTML content from the server is inserted -->
-                    </div>
-                </div>
-            `;
+                        <div class="mb-4 flex items-start ${align}">
+                            <div class="w-8 h-8 rounded-full flex items-center justify-center text-sm font-semibold ${avatarColor} text-white">
+                                ${avatarText}
+                            </div>
+                            <div class="max-w-[70%] ${className} rounded-lg py-2 px-4">
+                                ${msg.content}
+                            </div>
+                        </div>
+                    `;
                 });
 
                 // Scroll to the bottom of the chat messages
@@ -280,7 +294,6 @@
                 console.error('Error:', error);
             }
         }
-
 
         // Create HTML for a single message
         function createMessageHTML(msg) {
@@ -305,6 +318,8 @@
         // Handle form submission for sending messages
         async function handleSubmit(event) {
             event.preventDefault();
+            toggleThinkingIndicator(true);
+
             const message = userInput.value.trim();
 
             if (!message) return;
@@ -314,21 +329,21 @@
             }
 
             chatMessages.innerHTML += createMessageHTML({ role: 'user', content: message });
-            toggleThinkingIndicator(true);
             userInput.value = '';
 
             try {
-                const response = await fetch(`/conversation/${currentConversationId}/chat`, {
+                const response = await fetch(`/api/conversation/${currentConversationId}/chat`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ query: message, conversation_id: currentConversationId })
+                    body: JSON.stringify({ message: message })
                 });
 
                 const data = await response.json();
-                toggleThinkingIndicator(false);
 
                 chatMessages.innerHTML += createMessageHTML({ role: 'assistant', content: data.html });
                 chatMessages.scrollTop = chatMessages.scrollHeight;
+
+                toggleThinkingIndicator(false);
             } catch (error) {
                 console.error('Error:', error);
                 toggleThinkingIndicator(false);
@@ -337,4 +352,6 @@
 
         // Initialize the chat interface
         initializeChat();
+    </script>
+
     </script>

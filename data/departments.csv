@@ -1,7 +1,5 @@
-"ID","Department Name","Description"
-"1","Sales","Responsible for generating revenue"
-"2","Marketing","Handles advertising and promotions"
-"3","IT","Manages technology infrastructure"
-"4","HR","Oversees employee relations and training"
-"5","Finance","Handles financial planning and accounting"
-"6","Operations","Manages day-to-day business activities"
+id,name,head_id,budget,location
+1,Engineering,1,1000000,Floor 3
+2,Sales,2,800000,Floor 2
+3,Marketing,3,600000,Floor 2
+4,HR,4,400000,Floor 1

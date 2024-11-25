@@ -1,0 +1,103 @@
+{
+    "info": {
+        "name": "RAG Chat API",
+        "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+    },
+    "item": [
+        {
+            "name": "Create Conversation",
+            "request": {
+                "method": "POST",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                    }
+                ],
+                "url": {
+                    "raw": "http://http://127.0.0.1:5000/api/conversation",
+                    "protocol": "http",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "5000",
+                    "path": [
+                        "api",
+                        "conversation"
+                    ]
+                },
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\n    \"title\": \"Test Conversation 1\"\n}"
+                }
+            }
+        },
+        {
+            "name": "Send Message",
+            "request": {
+                "method": "POST",
+                "header": [
+                    {
+                        "key": "Content-Type",
+                        "value": "application/json"
+                    }
+                ],
+                "url": {
+                    "raw": "http://http://127.0.0.1:5000/api/conversation/1/messages",
+                    "protocol": "http",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "5000",
+                    "path": [
+                        "api",
+                        "conversation",
+                        "1",
+                        "messages"
+                    ]
+                },
+                "body": {
+                    "mode": "raw",
+                    "raw": "{\n    \"message\": \"How many employees are in the Engineering department?\"\n}"
+                }
+            }
+        },
+        {
+            "name": "Get Conversation",
+            "request": {
+                "method": "GET",
+                "url": {
+                    "raw": "http://http://127.0.0.1:5000/api/conversation/1",
+                    "protocol": "http",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "5000",
+                    "path": [
+                        "api",
+                        "conversation",
+                        "1"
+                    ]
+                }
+            }
+        },
+        {
+            "name": "Get All Conversations",
+            "request": {
+                "method": "GET",
+                "url": {
+                    "raw": "http://http://127.0.0.1:5000/api/conversations",
+                    "protocol": "http",
+                    "host": [
+                        "localhost"
+                    ],
+                    "port": "5000",
+                    "path": [
+                        "api",
+                        "conversations"
+                    ]
+                }
+            }
+        }
+    ]
+}
